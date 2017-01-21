@@ -10,37 +10,47 @@ import java.util.ArrayList;
  */
 
 public class RatesResponse {
+    final String Bank_AAIB = "aaib";
+    final String Bank_ALEX_BANK = "alexbank";
+    final String Bank_BANQUE_DU_CAIRE = "banqueducaire";
+    final String Bank_BENQUE_MISR = "benquemisr";
+    final String Bank_BLOM = "blom";
+    final String Bank_CEB = "cbe";
+    final String Bank_CIB = "cib";
+    final String Bank_NBE = "nbe";
+    final String Bank_SCBANK = "scbank";
 
-    @SerializedName("aaib")
+    @SerializedName(Bank_AAIB)
     @Expose
     private Bank aaib;
-    @SerializedName("alexbank")
+    @SerializedName(Bank_ALEX_BANK)
     @Expose
     private Bank alexbank;
-    @SerializedName("banqueducaire")
+    @SerializedName(Bank_BANQUE_DU_CAIRE)
     @Expose
     private Bank banqueducaire;
-    @SerializedName("benquemisr")
+    @SerializedName(Bank_BENQUE_MISR)
     @Expose
     private Bank benquemisr;
-    @SerializedName("blom")
+    @SerializedName(Bank_BLOM)
     @Expose
     private Bank blom;
-    @SerializedName("cbe")
+    @SerializedName(Bank_CEB)
     @Expose
     private Bank cbe;
-    @SerializedName("cib")
+    @SerializedName(Bank_CIB)
     @Expose
     private Bank cib;
-    @SerializedName("nbe")
+    @SerializedName(Bank_NBE)
     @Expose
     private Bank nbe;
-    @SerializedName("scbank")
+    @SerializedName(Bank_SCBANK)
     @Expose
     private Bank scbank;
-/**
- * the main perpose of this method is to convert passed object formate inro array list of banks with the id inside the object
- */
+
+    /**
+     * the main perpose of this method is to convert passed object formate inro array list of banks with the id inside the object
+     */
     public ArrayList<Bank> getBanks() {
         ArrayList<Bank> banks = new ArrayList<Bank>();
         addBankIfNOtNull(banks, aaib, "aaib");
