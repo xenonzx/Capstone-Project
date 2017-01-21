@@ -20,6 +20,17 @@ public class Bank {
     @Expose
     private String title;
 
+
+    public String getSymbolKey() {
+        return symbolKey;
+    }
+
+    public void setSymbolKey(String symbolKey) {
+        this.symbolKey = symbolKey;
+    }
+
+    private String symbolKey;
+
     public CurrencyRate getCurrencyRate() {
         return currencyRate;
     }
