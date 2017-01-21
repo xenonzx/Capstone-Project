@@ -21,15 +21,15 @@ public class Bank {
     private String title;
 
 
-    public String getSymbolKey() {
-        return symbolKey;
+    public String getId() {
+        return id;
     }
 
-    public void setSymbolKey(String symbolKey) {
-        this.symbolKey = symbolKey;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    private String symbolKey;
+    private String id;
 
     public CurrencyRate getCurrencyRate() {
         return currencyRate;

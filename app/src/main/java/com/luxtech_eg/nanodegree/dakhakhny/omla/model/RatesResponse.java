@@ -38,23 +38,26 @@ public class RatesResponse {
     @SerializedName("scbank")
     @Expose
     private Bank scbank;
-
-    ArrayList<Bank> getBanks() {
+/**
+ * the main perpose of this method is to convert passed object formate inro array list of banks with the id inside the object
+ */
+    public ArrayList<Bank> getBanks() {
         ArrayList<Bank> banks = new ArrayList<Bank>();
-        addBankIfNOtNull(banks, aaib);
-        addBankIfNOtNull(banks, alexbank);
-        addBankIfNOtNull(banks, banqueducaire);
-        addBankIfNOtNull(banks, benquemisr);
-        addBankIfNOtNull(banks, blom);
-        addBankIfNOtNull(banks, cbe);
-        addBankIfNOtNull(banks, cib);
-        addBankIfNOtNull(banks, nbe);
-        addBankIfNOtNull(banks, scbank);
+        addBankIfNOtNull(banks, aaib, "aaib");
+        addBankIfNOtNull(banks, alexbank, "alexbank");
+        addBankIfNOtNull(banks, banqueducaire, "banqueducaire");
+        addBankIfNOtNull(banks, benquemisr, "benquemisr");
+        addBankIfNOtNull(banks, blom, "blom");
+        addBankIfNOtNull(banks, cbe, "cbe");
+        addBankIfNOtNull(banks, cib, "cib");
+        addBankIfNOtNull(banks, nbe, "nbe");
+        addBankIfNOtNull(banks, scbank, "scbank");
         return banks;
     }
 
-    void addBankIfNOtNull(ArrayList<Bank> banks, Bank bank) {
+    void addBankIfNOtNull(ArrayList<Bank> banks, Bank bank, String id) {
         if (bank != null) {
+            bank.setId(id);
             banks.add(bank);
         }
     }
