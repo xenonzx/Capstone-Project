@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Omla</string>
+    <string name="rates">Rates</string>
+    <string name="sell">Sell</string>
+    <string name="buy">Buy</string>
+
+    <string name="egyptian_pound">EGP</string>
+    <string name="us_dollar">USD</string>
+    <string name="euro">EUR</string>
+    <string name="saudi_riyal">SAR</string>
+    <string name="british_pound">GBP</string>
+
+    <string name="us_dollar_to_egyptian_pound">USD/EGP</string>
+    <string name="euro_to_egyptian_pound">EUR/EGP</string>
+    <string name="saudi_riyal_to_egyptian_pound">SAR/EGP</string>
+    <string name="british_pound_to_egyptian_pound">GBP/EGP</string>
+
+    <string name="showing_rates_for">Showing rates for %1$s</string>
+    <string name="price_with_egp_currency" translatable="false">%1$.3f EGP</string>
+</resources>
