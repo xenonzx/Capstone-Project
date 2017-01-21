@@ -3,6 +3,8 @@ package com.luxtech_eg.nanodegree.dakhakhny.omla.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 /**
  * Created by ahmed on 21/01/17.
  */
@@ -37,6 +39,25 @@ public class RatesResponse {
     @Expose
     private Bank scbank;
 
+    ArrayList<Bank> getBanks() {
+        ArrayList<Bank> banks = new ArrayList<Bank>();
+        addBankIfNOtNull(banks, aaib);
+        addBankIfNOtNull(banks, alexbank);
+        addBankIfNOtNull(banks, banqueducaire);
+        addBankIfNOtNull(banks, benquemisr);
+        addBankIfNOtNull(banks, blom);
+        addBankIfNOtNull(banks, cbe);
+        addBankIfNOtNull(banks, cib);
+        addBankIfNOtNull(banks, nbe);
+        addBankIfNOtNull(banks, scbank);
+        return banks;
+    }
+
+    void addBankIfNOtNull(ArrayList<Bank> banks, Bank bank) {
+        if (bank != null) {
+            banks.add(bank);
+        }
+    }
 
     public Bank getAaib() {
         return aaib;
@@ -109,7 +130,6 @@ public class RatesResponse {
     public void setScbank(Bank scbank) {
         this.scbank = scbank;
     }
-
 
 
 }
