@@ -1,9 +1,11 @@
-package com.luxtech_eg.nanodegree.dakhakhny.omla;
+package com.luxtech_eg.nanodegree.dakhakhny.omla.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+
+import com.luxtech_eg.nanodegree.dakhakhny.omla.R;
 
 /**
  * Created by ahmed on 21/01/17.
