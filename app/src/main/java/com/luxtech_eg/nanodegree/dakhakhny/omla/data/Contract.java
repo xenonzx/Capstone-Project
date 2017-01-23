@@ -8,7 +8,7 @@ public final class Contract {
 
     static final String AUTHORITY = "com.luxtech_eg.nanodegree.dakhakhny.omla";
     static final String PATH_BANK = "bank";
-    static final String PATH_QUOTE_WITH_SYMBOL = "bank/*";
+    static final String PATH_BANK_WITH_SYMBOL = "bank/*";
     private static final Uri BASE_URI = Uri.parse("content://" + AUTHORITY);
 
     private Contract() {
