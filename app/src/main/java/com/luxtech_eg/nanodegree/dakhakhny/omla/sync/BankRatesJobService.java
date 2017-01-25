@@ -1,7 +1,9 @@
 package com.luxtech_eg.nanodegree.dakhakhny.omla.sync;
 
+
 import android.content.Intent;
 import android.util.Log;
+
 import com.firebase.jobdispatcher.JobParameters;
 import com.firebase.jobdispatcher.JobService;
 
