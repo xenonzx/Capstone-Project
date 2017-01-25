@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.luxtech_eg.nanodegree.dakhakhny.omla.R;
+import com.luxtech_eg.nanodegree.dakhakhny.omla.data.Contract;
 import com.luxtech_eg.nanodegree.dakhakhny.omla.model.Bank;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.Curren
     private CurrencyAdapterOnClickHandler clickHandler;
 
     private ArrayList<Bank> banks;
+    private Cursor cursor;
 
     CurrencyAdapter(Context context, CurrencyAdapterOnClickHandler clickListener) {
         this.context = context;
@@ -33,13 +35,11 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.Curren
     }
 
     void setCursor(Cursor cursor) {
-        //TODO convertCusortoArray list
-    }
 
-    void setBanks(ArrayList<Bank> banks) {
-        this.banks = banks;
+        this.cursor = cursor;
         notifyDataSetChanged();
     }
+
 
     @Override
     public CurrencyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -51,15 +51,16 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.Curren
 
     @Override
     public void onBindViewHolder(CurrencyViewHolder holder, int position) {
-        Bank b = banks.get(position);
-        holder.bind(b.getTitle(), b.getCurrencyRate().getUsd().getBuy(), b.getCurrencyRate().getUsd().getSell());
+        cursor.moveToPosition(position);
+        //Bank b = banks.get(position);
+        holder.bind(cursor.getString(Contract.Bank.POSITION_BANK_SYMBOL), 1.0, 1.0);
     }
 
     @Override
     public int getItemCount() {
         int count = 0;
-        if (banks != null) {
-            count = banks.size();
+        if (cursor != null) {
+            count = cursor.getCount();
         }
         return count;
     }
@@ -89,7 +90,7 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.Curren
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
 //            cursor.moveToPosition(adapterPosition);
-//            int symbolColumn = cursor.getColumnIndex(Contract.Quote.COLUMN_SYMBOL);
+//            int symbolColumn = cursor.getColumnIndex(Contract.Bank.COLUMN_BANK_SYMBOL);
 //            clickHandler.onClick(cursor.getString(symbolColumn));
 
         }

@@ -5,7 +5,6 @@ import android.app.job.JobService;
 import android.content.Intent;
 import android.util.Log;
 
-import timber.log.Timber;
 //TODO extend from jop dispatcher
 public class BankRatesJobService extends JobService {
     String TAG = BankRatesJobService.class.getSimpleName();

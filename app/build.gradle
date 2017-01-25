@@ -5,7 +5,8 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.luxtech_eg.nanodegree.dakhakhny.omla"
-        minSdkVersion 17
+        //TODO reset to min sdk version 17
+        minSdkVersion 21
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"

@@ -3,6 +3,8 @@
     package="com.luxtech_eg.nanodegree.dakhakhny.omla">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -27,6 +29,15 @@
             android:name=".data.BanksExchangeRatesProvider"
             android:authorities="com.luxtech_eg.nanodegree.dakhakhny.omla"
             android:exported="false" />
+
+        <service
+            android:name=".sync.BanksRatesIntentService"
+            android:exported="false" />
+        <service
+            android:name=".sync.BankRatesJobService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 
 </manifest>

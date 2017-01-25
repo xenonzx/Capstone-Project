@@ -7,10 +7,17 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.luxtech_eg.nanodegree.dakhakhny.omla.data.Contract;
 import com.luxtech_eg.nanodegree.dakhakhny.omla.model.Bank;
+import com.luxtech_eg.nanodegree.dakhakhny.omla.model.RatesResponse;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public final class BankRatesSyncJob {
 
@@ -33,34 +40,53 @@ public final class BankRatesSyncJob {
 
         Log.d(TAG, "getBankRates");
         ArrayList<ContentValues> BankCVs = new ArrayList<>();
-//TODO MAke Api Request and parse response
+        //TODO MAke Api Request and parse response
+        try {
+            //Response<ResponseBody> response = ClientGenerator.getRatesApiClient().fetchRates().execute();
+            //Log.v(TAG, "ResponseBody" + new Gson().toJson(response.body()));
+//            ArrayList<Bank> banks = response.body().getBanks();
+            OkHttpClient client = new OkHttpClient();
 
-        Bank b = new Bank();
-        ContentValues BankCV = new ContentValues();
-        BankCV.put(Contract.Bank.COLUMN_BANK_SYMBOL, b.getId());
-        BankCV.put(Contract.Bank.COLUMN_BANK_TITLE, b.getTitle());
-        BankCV.put(Contract.Bank.COLUMN_BANK_URL, b.getRef());
-        BankCV.put(Contract.Bank.COLUMN_USD_BUY_PRICE, b.getCurrencyRate().getUsd().getBuy());
-        BankCV.put(Contract.Bank.COLUMN_USD_SELL_PRICE, b.getCurrencyRate().getUsd().getSell());
-        BankCV.put(Contract.Bank.COLUMN_EUR_BUY_PRICE, b.getCurrencyRate().getEur().getBuy());
-        BankCV.put(Contract.Bank.COLUMN_EUR_SELL_PRICE, b.getCurrencyRate().getEur().getSell());
-        BankCV.put(Contract.Bank.COLUMN_SAR_BUY_PRICE, b.getCurrencyRate().getSar().getBuy());
-        BankCV.put(Contract.Bank.COLUMN_SAR_SELL_PRICE, b.getCurrencyRate().getSar().getSell());
-        BankCV.put(Contract.Bank.COLUMN_GBP_BUY_PRICE, b.getCurrencyRate().getGbp().getBuy());
-        BankCV.put(Contract.Bank.COLUMN_GBP_SELL_PRICE, b.getCurrencyRate().getGbp().getSell());
+            Request request = new Request.Builder()
+                    .url("https://api.curates.club/")
+                    .build();
 
+            Response response = client.newCall(request).execute();
+            String body = new String(response.body().string());
 
-        BankCVs.add(BankCV);
+            Log.v(TAG, "ResponseBody" + body);
+            Log.v(TAG, "RatesResponse" + new Gson().toJson(new Gson().fromJson(body, RatesResponse.class)));
+            ArrayList<Bank> banks = new Gson().fromJson(body, RatesResponse.class).getBanks();
 
+            int banksLength = banks.size();
+            for (int i = 0; i < banksLength; i++) {
 
-        context.getContentResolver()
-                .bulkInsert(
-                        Contract.Bank.URI,
-                        BankCVs.toArray(new ContentValues[BankCVs.size()]));
+                Bank b = banks.get(i);
+                ContentValues BankCV = new ContentValues();
+                BankCV.put(Contract.Bank.COLUMN_BANK_SYMBOL, b.getId());
+                BankCV.put(Contract.Bank.COLUMN_BANK_TITLE, b.getTitle());
+                BankCV.put(Contract.Bank.COLUMN_BANK_URL, b.getRef());
+                BankCV.put(Contract.Bank.COLUMN_USD_BUY_PRICE, b.getCurrencyRate().getUsd().getBuy());
+                BankCV.put(Contract.Bank.COLUMN_USD_SELL_PRICE, b.getCurrencyRate().getUsd().getSell());
+                BankCV.put(Contract.Bank.COLUMN_EUR_BUY_PRICE, b.getCurrencyRate().getEur().getBuy());
+                BankCV.put(Contract.Bank.COLUMN_EUR_SELL_PRICE, b.getCurrencyRate().getEur().getSell());
+                BankCV.put(Contract.Bank.COLUMN_SAR_BUY_PRICE, b.getCurrencyRate().getSar().getBuy());
+                BankCV.put(Contract.Bank.COLUMN_SAR_SELL_PRICE, b.getCurrencyRate().getSar().getSell());
+                BankCV.put(Contract.Bank.COLUMN_GBP_BUY_PRICE, b.getCurrencyRate().getGbp().getBuy());
+                BankCV.put(Contract.Bank.COLUMN_GBP_SELL_PRICE, b.getCurrencyRate().getGbp().getSell());
+                BankCVs.add(BankCV);
 
-        Intent dataUpdatedIntent = new Intent(ACTION_DATA_UPDATED);
-        context.sendBroadcast(dataUpdatedIntent);
-
+            }
+            int numRowsInserted = context.getContentResolver()
+                    .bulkInsert(
+                            Contract.Bank.URI,
+                            BankCVs.toArray(new ContentValues[BankCVs.size()]));
+            Log.e(TAG, "number of rows newly inserted" + numRowsInserted);
+            Intent dataUpdatedIntent = new Intent(ACTION_DATA_UPDATED);
+            context.sendBroadcast(dataUpdatedIntent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         // TODO Check if not Success
         Log.e(TAG, "Error fetching bank rates");
     }
@@ -80,14 +106,16 @@ public final class BankRatesSyncJob {
     }
 
     public static synchronized void syncImmediately(Context context) {
-
+        Log.d(TAG, "syncImmediately");
         ConnectivityManager cm =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
+            Log.d(TAG, "syncImmediately online");
             Intent nowIntent = new Intent(context, BanksRatesIntentService.class);
             context.startService(nowIntent);
         } else {
+            Log.d(TAG, "syncImmediately not ONLINE");
             //TODO call Jop Dispatcher
 
         }
