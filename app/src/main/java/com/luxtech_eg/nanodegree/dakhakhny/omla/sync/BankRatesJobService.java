@@ -1,9 +1,9 @@
 package com.luxtech_eg.nanodegree.dakhakhny.omla.sync;
 
-import android.app.job.JobParameters;
-import android.app.job.JobService;
 import android.content.Intent;
 import android.util.Log;
+import com.firebase.jobdispatcher.JobParameters;
+import com.firebase.jobdispatcher.JobService;
 
 //TODO extend from jop dispatcher
 public class BankRatesJobService extends JobService {

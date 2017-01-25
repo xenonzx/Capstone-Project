@@ -46,4 +46,7 @@ dependencies {
 
     //retrofit
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
+
+    //firebase job dispatcher
+    compile 'com.firebase:firebase-jobdispatcher:0.5.2'
 }
