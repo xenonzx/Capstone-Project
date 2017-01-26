@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_item_usd"
+        android:title="@string/us_dollar_to_egyptian_pound" />
+    <item
+        android:id="@+id/menu_item_eur"
+        android:title="@string/euro_to_egyptian_pound" />
+    <item
+        android:id="@+id/menu_item_sar"
+        android:title="@string/saudi_riyal_to_egyptian_pound" />
+    <item
+        android:id="@+id/menu_item_gbp"
+        android:title="@string/british_pound_to_egyptian_pound" />
+</menu>

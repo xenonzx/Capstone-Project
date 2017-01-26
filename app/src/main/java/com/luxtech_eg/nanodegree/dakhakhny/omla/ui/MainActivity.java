@@ -10,10 +10,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.crashlytics.android.Crashlytics;
 import com.luxtech_eg.nanodegree.dakhakhny.omla.R;
 import com.luxtech_eg.nanodegree.dakhakhny.omla.data.Contract;
+import com.luxtech_eg.nanodegree.dakhakhny.omla.data.PrefUtils;
 import com.luxtech_eg.nanodegree.dakhakhny.omla.sync.BankRatesSyncJob;
 
 import butterknife.BindView;
@@ -57,6 +60,27 @@ public class MainActivity extends AppCompatActivity implements CurrencyAdapter.C
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.menu_item_usd) {
+            PrefUtils.setCurrencyDisplayMode(MainActivity.this, getString(R.string.prefs_currency_display_value_usd));
+        } else if (id == R.id.menu_item_eur) {
+            PrefUtils.setCurrencyDisplayMode(MainActivity.this, getString(R.string.prefs_currency_display_value_eur));
+        } else if (id == R.id.menu_item_sar) {
+            PrefUtils.setCurrencyDisplayMode(MainActivity.this, getString(R.string.prefs_currency_display_value_sar));
+        } else if (id == R.id.menu_item_gbp) {
+            PrefUtils.setCurrencyDisplayMode(MainActivity.this, getString(R.string.prefs_currency_display_value_gbp));
+        }
+        adapter.notifyDataSetChanged();
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public void onClick(String symbol) {
