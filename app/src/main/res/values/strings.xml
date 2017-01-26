@@ -17,4 +17,13 @@
 
     <string name="showing_rates_for">Showing rates for %1$s</string>
     <string name="price_with_egp_currency" translatable="false">%1$.3f EGP</string>
+
+    <!-- prefs -->
+    <string name="prefs_currency_display_key">currency_display_key</string>
+    <string name="prefs_currency_display_value_default">@string/prefs_currency_display_value_usd</string>
+
+    <string name="prefs_currency_display_value_usd">currency_display_value_usd</string>
+    <string name="prefs_currency_display_value_sar">currency_display_value_sar</string>
+    <string name="prefs_currency_display_value_eur">currency_display_value_eur</string>
+    <string name="prefs_currency_display_value_gbp">currency_display_value_gbp</string>
 </resources>

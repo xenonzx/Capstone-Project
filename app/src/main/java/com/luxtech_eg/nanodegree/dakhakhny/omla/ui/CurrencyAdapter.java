@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.luxtech_eg.nanodegree.dakhakhny.omla.R;
 import com.luxtech_eg.nanodegree.dakhakhny.omla.data.Contract;
+import com.luxtech_eg.nanodegree.dakhakhny.omla.data.PrefUtils;
 import com.luxtech_eg.nanodegree.dakhakhny.omla.model.Bank;
 
 import java.util.ArrayList;
@@ -52,8 +53,26 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.Curren
     @Override
     public void onBindViewHolder(CurrencyViewHolder holder, int position) {
         cursor.moveToPosition(position);
-        //Bank b = banks.get(position);
-        holder.bind(cursor.getString(Contract.Bank.POSITION_BANK_SYMBOL), 1.0, 1.0);
+        String displayMode = PrefUtils.getCurrencyDisplayMode(context);
+
+        double buyPrice = 0;
+        double sellPrice = 0;
+
+        if (displayMode.equals(context.getString(R.string.prefs_currency_display_value_usd))) {
+            buyPrice = cursor.getDouble(Contract.Bank.POSITION_USD_BUY_PRICE);
+            sellPrice = cursor.getDouble(Contract.Bank.POSITION_USD_SELL_PRICE);
+        } else if (displayMode.equals(context.getString(R.string.prefs_currency_display_value_sar))) {
+            buyPrice = cursor.getDouble(Contract.Bank.POSITION_SAR_BUY_PRICE);
+            sellPrice = cursor.getDouble(Contract.Bank.POSITION_SAR_SELL_PRICE);
+        } else if (displayMode.equals(context.getString(R.string.prefs_currency_display_value_gbp))) {
+            buyPrice = cursor.getDouble(Contract.Bank.POSITION_GBP_BUY_PRICE);
+            sellPrice = cursor.getDouble(Contract.Bank.POSITION_GBP_SELL_PRICE);
+        } else if (displayMode.equals(context.getString(R.string.prefs_currency_display_value_eur))) {
+            buyPrice = cursor.getDouble(Contract.Bank.POSITION_EUR_BUY_PRICE);
+            sellPrice = cursor.getDouble(Contract.Bank.POSITION_EUR_SELL_PRICE);
+        }
+
+        holder.bind(cursor.getString(Contract.Bank.POSITION_BANK_SYMBOL), buyPrice, sellPrice);
     }
 
     @Override
