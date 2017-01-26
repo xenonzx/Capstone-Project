@@ -10,12 +10,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
 import com.luxtech_eg.nanodegree.dakhakhny.omla.R;
 import com.luxtech_eg.nanodegree.dakhakhny.omla.data.Contract;
 import com.luxtech_eg.nanodegree.dakhakhny.omla.sync.BankRatesSyncJob;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.fabric.sdk.android.Fabric;
 
 public class MainActivity extends AppCompatActivity implements CurrencyAdapter.CurrencyAdapterOnClickHandler, LoaderManager.LoaderCallbacks<Cursor> {
     private String TAG = MainActivity.class.getSimpleName();
@@ -32,6 +34,8 @@ public class MainActivity extends AppCompatActivity implements CurrencyAdapter.C
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
+
         setContentView(R.layout.activity_main);
         ButterKnife.bind(MainActivity.this);
         //Log.v(TAG, new Gson().toJson(new Gson().fromJson(getDummyJson(), RatesResponse.class).getBanks()));
@@ -42,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements CurrencyAdapter.C
         recyclerView.setAdapter(adapter);
         BankRatesSyncJob.initialize(this);
         getSupportLoaderManager().initLoader(RATES_LOADER, null, this);
+
     }
 
 
