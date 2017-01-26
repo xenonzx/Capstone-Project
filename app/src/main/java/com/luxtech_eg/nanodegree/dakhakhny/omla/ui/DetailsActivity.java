@@ -14,23 +14,25 @@ import com.luxtech_eg.nanodegree.dakhakhny.omla.R;
 
 public class DetailsActivity extends AppCompatActivity {
     public static String EXTRAS_BANK_URI_KEY = "bank_uri";
+    public static String DETAILS_FRAG_TAG = "details_frag_tag";
     DetailsFragment detailsFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
-        if (detailsFragment != null) {
+        detailsFragment = (DetailsFragment) getFragmentManager().findFragmentByTag(DETAILS_FRAG_TAG);
+        if (detailsFragment == null) {
             Log.v("gaga", "detailsFragment is not null");
-        }
-        if (getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().containsKey(EXTRAS_BANK_URI_KEY)) {
-            detailsFragment = DetailsFragment.newInstance(getIntent().getExtras().getString(EXTRAS_BANK_URI_KEY));
-        } else {
-            detailsFragment = DetailsFragment.newInstance();
-        }
 
+            if (getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().containsKey(EXTRAS_BANK_URI_KEY)) {
+                detailsFragment = DetailsFragment.newInstance(getIntent().getExtras().getString(EXTRAS_BANK_URI_KEY));
+            } else {
+                detailsFragment = DetailsFragment.newInstance();
+            }
+        }
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.container, detailsFragment);
+        fragmentTransaction.replace(R.id.container, detailsFragment, DETAILS_FRAG_TAG);
         fragmentTransaction.commit();
     }
 
