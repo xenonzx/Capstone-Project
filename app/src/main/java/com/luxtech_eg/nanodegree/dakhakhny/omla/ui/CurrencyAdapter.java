@@ -3,6 +3,7 @@ package com.luxtech_eg.nanodegree.dakhakhny.omla.ui;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,7 +90,7 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.Curren
     }
 
     class CurrencyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
+        String TAG = CurrencyViewHolder.class.getSimpleName();
         @BindView(R.id.tv_item_title)
         TextView title;
 
@@ -107,10 +108,10 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.Curren
 
         @Override
         public void onClick(View v) {
+            Log.v(TAG, "onclick");
             int adapterPosition = getAdapterPosition();
-//            cursor.moveToPosition(adapterPosition);
-//            int symbolColumn = cursor.getColumnIndex(Contract.Bank.COLUMN_BANK_SYMBOL);
-//            clickHandler.onClick(cursor.getString(symbolColumn));
+            cursor.moveToPosition(adapterPosition);
+            clickHandler.onClick(cursor.getString(Contract.Bank.POSITION_BANK_SYMBOL));
 
         }
 
