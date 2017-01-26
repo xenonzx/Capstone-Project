@@ -55,7 +55,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:25.1.0'
 
     //maps
-    compile 'com.google.android.gms:play-services-maps:9.8.0'
+    compile 'com.google.android.gms:play-services-maps:10.0.1'
 
     // butter knife
     compile 'com.jakewharton:butterknife:8.4.0'
@@ -74,4 +74,7 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.6.6@aar') {
         transitive = true;
     }
+
+    //google play services
+    compile 'com.google.android.gms:play-services:10.0.1'
 }
