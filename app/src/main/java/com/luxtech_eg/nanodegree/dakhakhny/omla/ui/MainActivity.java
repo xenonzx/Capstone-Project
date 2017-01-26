@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,7 +25,8 @@ public class MainActivity extends AppCompatActivity implements CurrencyAdapter.C
 
     @BindView(R.id.my_recycler_view)
     RecyclerView recyclerView;
-
+    @BindView(R.id.swipe_to_refresh)
+    SwipeRefreshLayout refreshLayout;
     RecyclerView.LayoutManager layoutManager;
     CurrencyAdapter adapter;
 
@@ -46,6 +48,12 @@ public class MainActivity extends AppCompatActivity implements CurrencyAdapter.C
         recyclerView.setAdapter(adapter);
         BankRatesSyncJob.initialize(this);
         getSupportLoaderManager().initLoader(RATES_LOADER, null, this);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                BankRatesSyncJob.syncImmediately(MainActivity.this);
+            }
+        });
 
     }
 
@@ -72,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements CurrencyAdapter.C
             //TODO Hide ERROR MESSAGE
         }
         adapter.setCursor(data);
+        refreshLayout.setRefreshing(false);
     }
 
     @Override
