@@ -26,13 +26,10 @@ import okhttp3.Response;
 
 public final class BankRatesSyncJob {
 
-    private static final int ONE_OFF_ID = 2;
     private static final String ONE_OFF_JOB_TAG = "one_off_job";
     public static final String ACTION_DATA_UPDATED = "com.luxtech_eg.nanodegree.dakhakhny.omla.ACTION_DATA_UPDATED";
     public static final String ACTION_INVALID_SYMBOL = "com.luxtech_eg.nanodegree.dakhakhny.omla.ACTION_INVALID_SYMBOL";
     public static final String EXTRAS_INVALID_SYMBOL = "EXTRAS_INVALID_SYMBOL";
-    private static final int PERIOD = 30000;
-    private static final int INITIAL_BACKOFF = 10000;
     private static final int START_WINDOW_IN_SECONDS = 1;
     private static final int END_WINDOW_IN_SECONDS = 60;
     private static final String PERIODIC_JOB_TAG = "periodic_job";
@@ -47,7 +44,6 @@ public final class BankRatesSyncJob {
 
         Log.d(TAG, "getBankRates");
         ArrayList<ContentValues> BankCVs = new ArrayList<>();
-        //TODO MAke Api Request and parse response
         try {
             OkHttpClient client = new OkHttpClient();
 
@@ -86,12 +82,15 @@ public final class BankRatesSyncJob {
                 Intent dataUpdatedIntent = new Intent(ACTION_DATA_UPDATED);
                 context.sendBroadcast(dataUpdatedIntent);
             } else {
+                //TODO Error Message
                 Log.e(TAG, "Request not successful");
             }
         } catch (IOException e) {
+            //TODO Failure Message
             Log.e(TAG, " IOException Error fetching bank rates");
             e.printStackTrace();
         } catch (Exception e) {
+            //TODO Failure Message
             Log.e(TAG, "Exception Error fetching bank rates");
             e.printStackTrace();
         }
