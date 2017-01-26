@@ -23,7 +23,20 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
 import com.luxtech_eg.nanodegree.dakhakhny.omla.R;
+import com.luxtech_eg.nanodegree.dakhakhny.omla.model.PlacesResponse;
+import com.luxtech_eg.nanodegree.dakhakhny.omla.model.Result;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Created by ahmed on 21/01/17.
@@ -96,7 +109,7 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback, Goo
 
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
-        setMapCamera();
+        checkLocationAndCameraLoaded();
     }
 
     public static DetailsFragment newInstance() {
@@ -154,20 +167,101 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback, Goo
         Log.v(TAG, "location" + mLastLocation.getLatitude() + " , " + mLastLocation.getLongitude());
         latitude = mLastLocation.getLatitude();
         longitude = mLastLocation.getLongitude();
-        setMapCamera();
+        checkLocationAndCameraLoaded();
     }
 
     // function called to ensure that map and lat long are set as the map loads separately  and latlong loads separately
     //  since I cant be sure which loads first due to the possibility of race( which value arrives first)
-    void setMapCamera() {
+    void checkLocationAndCameraLoaded() {
         Log.v(TAG, "is map set" + (mMap != null));
         Log.v(TAG, "is lat set" + (longitude != null));
 
         if (latitude != null && longitude != null && mMap != null) {
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), DEFAULT_ZOOM));
-
+            queryBankBranches();
 
         }
+    }
+
+    void queryBankBranches() {
+        OkHttpClient client = new OkHttpClient();
+//TODO refactor
+        Request request = new Request.Builder()
+                .url(sbMethod(latitude, longitude, 50000, "bank", "cib").toString())
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.v(TAG, "onFailure");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Log.v(TAG, " onResponse " + response.code());
+                if (response.isSuccessful()) {
+                    Log.v(TAG, " onResponse isSuccessful");
+                    String responseBody = response.body().string().toString();
+                    Log.v(TAG, " plases response body" + responseBody);
+                    try {
+                        PlacesResponse pr = new Gson().fromJson(responseBody, PlacesResponse.class);
+                        addBankBranchesToMap(pr.getResults());
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(TAG, " parsing went wong");
+                    }
+                } else {
+                    Log.v(TAG, " onResponse is NOT Successful");
+                }
+
+            }
+        });
+
+
+    }
+
+    //TODO  execute addBankBranchesToMap in post excute of async task
+    void addBankBranchesToMap(ArrayList<Result> results) {
+        int resultsArrayListSize = results.size();
+        Log.v(TAG, " results size" + resultsArrayListSize);
+        if (mMap == null) {
+            return;
+
+        }
+        Result tempResult;
+        for (int i = 0; i < resultsArrayListSize; i++) {
+            tempResult = results.get(i);
+            final Result finalTempResult = tempResult;
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(finalTempResult.getGeometry().getLocation().getLatitude(), finalTempResult.getGeometry().getLocation().getLongitude()))
+                            .title(finalTempResult.getName()));
+
+                }
+            });
+        }
+    }
+
+    public StringBuilder sbMethod(double lat, double longitude, int radius, String type, String keyword) {
+
+        //use your current location here
+        double mLatitude = lat;
+        double mLongitude = longitude;
+
+        StringBuilder sb = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
+        sb.append("location=" + mLatitude + "," + mLongitude);
+        sb.append("&radius=" + radius);
+        sb.append("&types=" + type);
+        sb.append("&keyword=" + keyword);
+        // sb.append("&sensor=true");
+        sb.append("&key=" + getActivity().getString(R.string.google_maps_key));
+        // example https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=31.2156876,29.9403779&radius=50000&types=bank
+
+        Log.d("Map", "api: " + sb.toString());
+
+        return sb;
     }
 
     boolean isLocationPermissionGranted() {
@@ -208,7 +302,6 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback, Goo
                 break;
             }
         }
-
-
     }
+
 }
