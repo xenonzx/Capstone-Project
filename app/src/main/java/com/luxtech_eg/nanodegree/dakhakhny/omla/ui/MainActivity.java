@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.luxtech_eg.nanodegree.dakhakhny.omla.R;
@@ -30,6 +31,9 @@ public class MainActivity extends AppCompatActivity implements CurrencyAdapter.C
     RecyclerView recyclerView;
     @BindView(R.id.swipe_to_refresh)
     SwipeRefreshLayout refreshLayout;
+
+    @BindView(R.id.tv_rates_title)
+    TextView ratesTitle;
     RecyclerView.LayoutManager layoutManager;
     CurrencyAdapter adapter;
 
@@ -57,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements CurrencyAdapter.C
                 BankRatesSyncJob.syncImmediately(MainActivity.this);
             }
         });
-
+        notifyTitleChanged();
     }
 
     @Override
@@ -79,7 +83,8 @@ public class MainActivity extends AppCompatActivity implements CurrencyAdapter.C
             PrefUtils.setCurrencyDisplayMode(MainActivity.this, getString(R.string.prefs_currency_display_value_gbp));
         }
         adapter.notifyDataSetChanged();
-        return super.onOptionsItemSelected(item);
+        notifyTitleChanged();
+        return true;
     }
 
     @Override
@@ -111,5 +116,26 @@ public class MainActivity extends AppCompatActivity implements CurrencyAdapter.C
     public void onLoaderReset(Loader<Cursor> loader) {
         Log.v(TAG, "onLoaderReset");
         adapter.setCursor(null);
+    }
+
+    void notifyTitleChanged() {
+        Log.v(TAG, "notifyTitleChanged" + PrefUtils.getCurrencyDisplayMode(MainActivity.this));
+        String displayMode = PrefUtils.getCurrencyDisplayMode(MainActivity.this);
+        String rate = getString(R.string.us_dollar_to_egyptian_pound);
+
+        if (displayMode.equals(getString(R.string.prefs_currency_display_value_usd))) {
+
+            rate = getString(R.string.us_dollar_to_egyptian_pound);
+        } else if (displayMode.equals(getString(R.string.prefs_currency_display_value_eur))) {
+            rate = getString(R.string.euro_to_egyptian_pound);
+        } else if (displayMode.equals(getString(R.string.prefs_currency_display_value_sar))) {
+            rate = getString(R.string.saudi_riyal_to_egyptian_pound);
+        } else if (displayMode.equals(getString(R.string.prefs_currency_display_value_gbp))) {
+            rate = getString(R.string.british_pound_to_egyptian_pound);
+        }
+        String ratesTitleText = String.format(getString(R.string.showing_rates_for), rate);
+        Log.v(TAG, ratesTitleText);
+        ratesTitle.setText(ratesTitleText);
+
     }
 }
