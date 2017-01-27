@@ -1,5 +1,6 @@
 package com.luxtech_eg.nanodegree.dakhakhny.omla.ui;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import butterknife.ButterKnife;
 import io.fabric.sdk.android.Fabric;
 
 import static com.luxtech_eg.nanodegree.dakhakhny.omla.data.PrefUtils.getCurrencyDisplayMode;
+import static com.luxtech_eg.nanodegree.dakhakhny.omla.ui.DetailsActivity.EXTRAS_BANK_SYMBOL_KEY;
 
 public class MainActivity extends AppCompatActivity implements CurrencyAdapter.CurrencyAdapterOnClickHandler, LoaderManager.LoaderCallbacks<Cursor> {
     private String TAG = MainActivity.class.getSimpleName();
@@ -63,6 +65,8 @@ public class MainActivity extends AppCompatActivity implements CurrencyAdapter.C
     private static final int BUY_SORTING = 1;
     private static final int SELL_SORTING = 2;
     int sortingOrder;
+    public static String DETAILS_FRAG_TAG = "main_details_frag_tag";
+
 
     @Override
 
@@ -72,6 +76,9 @@ public class MainActivity extends AppCompatActivity implements CurrencyAdapter.C
 
         setContentView(R.layout.activity_main);
         ButterKnife.bind(MainActivity.this);
+        if (findViewById(R.id.fl_details_container) != null) {
+            commitDetailsFragment(null);
+        }
         sortingOrder = NO_SORTING;
         MobileAds.initialize(getApplicationContext(), "ca-app-pub-6991334778086285~3008123764");
         //Log.v(TAG, new Gson().toJson(new Gson().fromJson(getDummyJson(), RatesResponse.class).getBanks()));
@@ -117,6 +124,17 @@ public class MainActivity extends AppCompatActivity implements CurrencyAdapter.C
         }
     }
 
+    void commitDetailsFragment(String bankSymbol) {
+        if (bankSymbol == null) {
+            return;
+        }
+        DetailsFragment detailsFragment = DetailsFragment.newInstance(bankSymbol);
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fl_details_container, detailsFragment, DETAILS_FRAG_TAG);
+        fragmentTransaction.commit();
+
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -145,10 +163,14 @@ public class MainActivity extends AppCompatActivity implements CurrencyAdapter.C
 
     @Override
     public void onClick(String symbol) {
-        //Uri bankSymbol = Contract.Bank.makeUriForBank(symbol);
-        Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
-        intent.putExtra(DetailsActivity.EXTRAS_BANK_SYMBOL_KEY, symbol);
-        startActivity(intent);
+        if (findViewById(R.id.fl_details_container) != null) {
+
+            commitDetailsFragment(symbol);
+        } else {
+            Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
+            intent.putExtra(EXTRAS_BANK_SYMBOL_KEY, symbol);
+            startActivity(intent);
+        }
     }
 
 
@@ -210,6 +232,8 @@ public class MainActivity extends AppCompatActivity implements CurrencyAdapter.C
         if (data.getCount() != 0) {
             //TODO Hide ERROR MESSAGE
         }
+        data.moveToFirst();
+        commitDetailsFragment(data.getString(Contract.Bank.POSITION_BANK_SYMBOL));
         adapter.setCursor(data);
         refreshLayout.setRefreshing(false);
     }
