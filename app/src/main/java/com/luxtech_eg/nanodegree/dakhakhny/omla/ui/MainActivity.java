@@ -13,6 +13,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
@@ -25,6 +27,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.fabric.sdk.android.Fabric;
 
+import static com.luxtech_eg.nanodegree.dakhakhny.omla.data.PrefUtils.getCurrencyDisplayMode;
+
 public class MainActivity extends AppCompatActivity implements CurrencyAdapter.CurrencyAdapterOnClickHandler, LoaderManager.LoaderCallbacks<Cursor> {
     private String TAG = MainActivity.class.getSimpleName();
 
@@ -35,10 +39,26 @@ public class MainActivity extends AppCompatActivity implements CurrencyAdapter.C
 
     @BindView(R.id.tv_rates_title)
     TextView ratesTitle;
+
+    @BindView(R.id.iv_buy_sort)
+    ImageView buySort;
+    @BindView(R.id.iv_sell_sort)
+    ImageView sellSort;
+
+    @BindView(R.id.tv_sell)
+    TextView sell;
+    @BindView(R.id.tv_buy)
+    TextView buy;
+
     RecyclerView.LayoutManager layoutManager;
     CurrencyAdapter adapter;
 
     private static final int RATES_LOADER = 0;
+    private static final String DESCENDING_ORDER = "  DESC";
+    private static final int NO_SORTING = 0;
+    private static final int BUY_SORTING = 1;
+    private static final int SELL_SORTING = 2;
+    int sortingOrder;
 
     @Override
 
@@ -48,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements CurrencyAdapter.C
 
         setContentView(R.layout.activity_main);
         ButterKnife.bind(MainActivity.this);
+        sortingOrder = NO_SORTING;
         //Log.v(TAG, new Gson().toJson(new Gson().fromJson(getDummyJson(), RatesResponse.class).getBanks()));
         layoutManager = new LinearLayoutManager(MainActivity.this);
         adapter = new CurrencyAdapter(MainActivity.this, this);
@@ -56,14 +77,29 @@ public class MainActivity extends AppCompatActivity implements CurrencyAdapter.C
         recyclerView.setAdapter(adapter);
         BankRatesSyncJob.initialize(this);
         getSupportLoaderManager().initLoader(RATES_LOADER, null, this);
+
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 BankRatesSyncJob.syncImmediately(MainActivity.this);
             }
         });
+        buy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sortWithBuy();
+            }
+        });
+
+        sell.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sortWithSell();
+            }
+        });
         notifyTitleChanged();
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -96,17 +132,60 @@ public class MainActivity extends AppCompatActivity implements CurrencyAdapter.C
         startActivity(intent);
     }
 
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Log.v(TAG, "onCreateLoader");
         String sortOrder = Contract.Bank.COLUMN_BANK_SYMBOL;
+
+        if (sortingOrder == BUY_SORTING) {
+            // buy Sorting of currency
+            sortOrder = getBuyingCurrencySortOrder() + DESCENDING_ORDER;
+
+        } else if (sortingOrder == SELL_SORTING) {
+            // sell Sorting of currency
+            sortOrder = getSellingCurrencySortOrder() + DESCENDING_ORDER;
+        }
+        Log.v(TAG, "sortOrder " + sortOrder);
         return new CursorLoader(this,
                 Contract.Bank.URI,
                 Contract.Bank.BANK_COLUMNS,
                 null, null, sortOrder);
     }
 
+    //returns the selling column of given currency to search with
+    String getSellingCurrencySortOrder() {
+        String currencyDisplayMode = PrefUtils.getCurrencyDisplayMode(this);
+        String sortOrder = null;
+        if (currencyDisplayMode.equals(getString(R.string.prefs_currency_display_value_usd))) {
+            sortOrder = Contract.Bank.COLUMN_USD_SELL_PRICE;
+        } else if (currencyDisplayMode.equals(getString(R.string.prefs_currency_display_value_eur))) {
+            sortOrder = Contract.Bank.COLUMN_EUR_SELL_PRICE;
+        } else if (currencyDisplayMode.equals(getString(R.string.prefs_currency_display_value_sar))) {
+            sortOrder = Contract.Bank.COLUMN_SAR_SELL_PRICE;
+        } else if (currencyDisplayMode.equals(getString(R.string.prefs_currency_display_value_gbp))) {
+            sortOrder = Contract.Bank.COLUMN_GBP_SELL_PRICE;
+        }
+        return sortOrder;
+    }
+
+    String getBuyingCurrencySortOrder() {
+        String currencyDisplayMode = PrefUtils.getCurrencyDisplayMode(this);
+        String sortOrder = null;
+        if (currencyDisplayMode.equals(getString(R.string.prefs_currency_display_value_usd))) {
+            sortOrder = Contract.Bank.COLUMN_USD_BUY_PRICE;
+        } else if (currencyDisplayMode.equals(getString(R.string.prefs_currency_display_value_eur))) {
+            sortOrder = Contract.Bank.COLUMN_EUR_BUY_PRICE;
+        } else if (currencyDisplayMode.equals(getString(R.string.prefs_currency_display_value_sar))) {
+            sortOrder = Contract.Bank.COLUMN_SAR_BUY_PRICE;
+        } else if (currencyDisplayMode.equals(getString(R.string.prefs_currency_display_value_gbp))) {
+            sortOrder = Contract.Bank.COLUMN_GBP_BUY_PRICE;
+        }
+        return sortOrder;
+    }
+
     @Override
+
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         Log.v(TAG, "onLoadFinished");
         if (data.getCount() != 0) {
@@ -123,8 +202,8 @@ public class MainActivity extends AppCompatActivity implements CurrencyAdapter.C
     }
 
     void notifyTitleChanged() {
-        Log.v(TAG, "notifyTitleChanged" + PrefUtils.getCurrencyDisplayMode(MainActivity.this));
-        String displayMode = PrefUtils.getCurrencyDisplayMode(MainActivity.this);
+        Log.v(TAG, "notifyTitleChanged" + getCurrencyDisplayMode(MainActivity.this));
+        String displayMode = getCurrencyDisplayMode(MainActivity.this);
         String rate = getString(R.string.us_dollar_to_egyptian_pound);
 
         if (displayMode.equals(getString(R.string.prefs_currency_display_value_usd))) {
@@ -141,5 +220,15 @@ public class MainActivity extends AppCompatActivity implements CurrencyAdapter.C
         Log.v(TAG, ratesTitleText);
         ratesTitle.setText(ratesTitleText);
 
+    }
+
+    void sortWithBuy() {
+        sortingOrder = BUY_SORTING;
+        getSupportLoaderManager().restartLoader(RATES_LOADER, null, this);
+    }
+
+    void sortWithSell() {
+        sortingOrder = SELL_SORTING;
+        getSupportLoaderManager().restartLoader(RATES_LOADER, null, this);
     }
 }
