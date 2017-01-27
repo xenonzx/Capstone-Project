@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -32,8 +33,6 @@ import com.luxtech_eg.nanodegree.dakhakhny.omla.model.Result;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -184,63 +183,65 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback, Goo
     }
 
     void queryBankBranches() {
-        OkHttpClient client = new OkHttpClient();
-//TODO refactor
-        Request request = new Request.Builder()
-                .url(sbMethod(latitude, longitude, 50000, "bank", "cib").toString())
-                .build();
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.v(TAG, "onFailure");
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                Log.v(TAG, " onResponse " + response.code());
-                if (response.isSuccessful()) {
-                    Log.v(TAG, " onResponse isSuccessful");
-                    String responseBody = response.body().string().toString();
-                    Log.v(TAG, " plases response body" + responseBody);
-                    try {
-                        PlacesResponse pr = new Gson().fromJson(responseBody, PlacesResponse.class);
-                        addBankBranchesToMap(pr.getResults());
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(TAG, " parsing went wong");
-                    }
-                } else {
-                    Log.v(TAG, " onResponse is NOT Successful");
-                }
-
-            }
-        });
-
+        new addMarkersTask(latitude, longitude, 50000, "bank", "cib").execute();
 
     }
+//    void queryBankBranches() {
+//        OkHttpClient client = new OkHttpClient();
+//        //TODO refactor
+//        Request request = new Request.Builder()
+//                .url(sbMethod(latitude, longitude, 50000, "bank", "cib").toString())
+//                .build();
+//        client.newCall(request).enqueue(new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                Log.v(TAG, "onFailure");
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                Log.v(TAG, " onResponse " + response.code());
+//                if (response.isSuccessful()) {
+//                    Log.v(TAG, " onResponse isSuccessful");
+//                    String responseBody = response.body().string().toString();
+//                    Log.v(TAG, " plases response body" + responseBody);
+//                    try {
+//                        PlacesResponse pr = new Gson().fromJson(responseBody, PlacesResponse.class);
+//                        addBankBranchesToMap(pr.getResults());
+//
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                        Log.e(TAG, " parsing went wong");
+//                    }
+//                } else {
+//                    Log.v(TAG, " onResponse is NOT Successful");
+//                }
+//
+//            }
+//        });
+//
+//
+//    }
 
     //TODO  execute addBankBranchesToMap in post excute of async task
     void addBankBranchesToMap(ArrayList<Result> results) {
         int resultsArrayListSize = results.size();
         Log.v(TAG, " results size" + resultsArrayListSize);
         if (mMap == null) {
+            Log.v(TAG, " map is null");
             return;
-
         }
-        Result tempResult;
-        for (int i = 0; i < resultsArrayListSize; i++) {
-            tempResult = results.get(i);
-            final Result finalTempResult = tempResult;
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(finalTempResult.getGeometry().getLocation().getLatitude(), finalTempResult.getGeometry().getLocation().getLongitude()))
-                            .title(finalTempResult.getName()));
 
-                }
-            });
+        for (int i = 0; i < resultsArrayListSize; i++) {
+
+            Result tempResult = results.get(i);
+            double lat = tempResult.getGeometry().getLocation().getLat();
+            double ln = tempResult.getGeometry().getLocation().getLng();
+
+            Log.v(TAG, "lat " + lat + ", long " + ln);
+            mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(lat, ln))
+                    .title(tempResult.getName()));
         }
     }
 
@@ -301,6 +302,58 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback, Goo
 
                 break;
             }
+        }
+    }
+
+    class addMarkersTask extends AsyncTask<Void, Void, ArrayList<Result>> {
+        private final double lat;
+        private final double longitude;
+        private final int radius;
+        private final String type;
+        private final String keyword;
+
+
+        addMarkersTask(double lat, double longitude, int radius, String type, String keyword) {
+            this.lat = lat;
+            this.longitude = longitude;
+            this.radius = radius;
+            this.type = type;
+            this.keyword = keyword;
+        }
+
+        @Override
+        protected ArrayList<Result> doInBackground(Void... params) {
+            ArrayList<Result> results = new ArrayList<Result>();
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(sbMethod(latitude, longitude, radius, type, keyword).toString())
+                    .build();
+            try {
+                Response response = client.newCall(request).execute();
+                if (response.isSuccessful()) {
+                    String responseBody = response.body().string().toString();
+                    Log.v(TAG, " plases response body" + responseBody);
+
+                    PlacesResponse pr = new Gson().fromJson(responseBody, PlacesResponse.class);
+                    results = pr.getResults();
+
+
+                } else {
+                    Log.v(TAG, " onResponse is NOT Successful");
+                }
+            } catch (IOException e) {
+                Log.v(TAG, " IOException");
+                e.printStackTrace();
+            } catch (Exception e) {
+                Log.v(TAG, " Exception");
+                e.printStackTrace();
+            }
+            return results;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Result> results) {
+            addBankBranchesToMap(results);
         }
     }
 
