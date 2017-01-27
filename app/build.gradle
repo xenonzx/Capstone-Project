@@ -80,6 +80,6 @@ dependencies {
 
 
 }
-if(flavor=="free"){
+if (flavor == "free") {
     apply plugin: 'com.google.gms.google-services'
 }

@@ -48,7 +48,7 @@
 
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="@string/fabric_api_key" />
+                                                                                android:value="c0580d5bd2b353be7043c439b39bdc86e2c3c27e" />
 
         <receiver
             android:name=".widget.CurrencyWidgetProvider"

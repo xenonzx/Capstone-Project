@@ -18,6 +18,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.luxtech_eg.nanodegree.dakhakhny.omla.AdsHelper;
 import com.luxtech_eg.nanodegree.dakhakhny.omla.R;
 import com.luxtech_eg.nanodegree.dakhakhny.omla.data.Contract;
 import com.luxtech_eg.nanodegree.dakhakhny.omla.data.PrefUtils;
@@ -69,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements CurrencyAdapter.C
         setContentView(R.layout.activity_main);
         ButterKnife.bind(MainActivity.this);
         sortingOrder = NO_SORTING;
+        MobileAds.initialize(getApplicationContext(), "ca-app-pub-6991334778086285~3008123764");
         //Log.v(TAG, new Gson().toJson(new Gson().fromJson(getDummyJson(), RatesResponse.class).getBanks()));
         layoutManager = new LinearLayoutManager(MainActivity.this);
         adapter = new CurrencyAdapter(MainActivity.this, this);
@@ -102,6 +107,14 @@ public class MainActivity extends AppCompatActivity implements CurrencyAdapter.C
             }
         });
         notifyTitleChanged();
+        AdView mAdView = AdsHelper.getAdView(this);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        if (mAdView != null) {
+            Log.v(TAG, "mAdView exists   ");
+            mAdView.loadAd(adRequest);
+        } else {
+            Log.v(TAG, "mAdView is null");
+        }
     }
 
 
