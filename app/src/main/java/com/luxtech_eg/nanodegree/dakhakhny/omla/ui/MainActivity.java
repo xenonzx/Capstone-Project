@@ -88,6 +88,8 @@ public class MainActivity extends AppCompatActivity implements CurrencyAdapter.C
             @Override
             public void onClick(View v) {
                 sortWithBuy();
+                buySort.setVisibility(View.VISIBLE);
+                sellSort.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -95,6 +97,8 @@ public class MainActivity extends AppCompatActivity implements CurrencyAdapter.C
             @Override
             public void onClick(View v) {
                 sortWithSell();
+                buySort.setVisibility(View.INVISIBLE);
+                sellSort.setVisibility(View.VISIBLE);
             }
         });
         notifyTitleChanged();
