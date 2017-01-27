@@ -6,4 +6,6 @@
     <color name="header_color">#f8807c7d</color>
     <color name="bank_card_background_color">#f8cfcccd</color>
     <color name="widget_background">#7f000000</color>
+    <color name="widget_header_title_text_color">#ffffff</color>
+
 </resources>

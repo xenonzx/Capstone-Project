@@ -13,7 +13,8 @@
         android:background="@color/colorPrimary"
         android:padding="@dimen/padding_small"
         android:paddingStart="@dimen/padding_large"
-        android:text="@string/app_name" />
+        android:text="@string/app_name"
+        android:textColor="@color/widget_header_title_text_color" />
 
     <ListView
         android:id="@+id/lv_stocks"
