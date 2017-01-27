@@ -121,6 +121,8 @@ public class MainActivity extends AppCompatActivity implements CurrencyAdapter.C
         }
         adapter.notifyDataSetChanged();
         notifyTitleChanged();
+        // restarts loader to make sorting correctly
+        getSupportLoaderManager().restartLoader(RATES_LOADER, null, this);
         return true;
     }
 
