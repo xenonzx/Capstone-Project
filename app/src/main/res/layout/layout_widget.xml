@@ -17,7 +17,7 @@
         android:textColor="@color/widget_header_title_text_color" />
 
     <ListView
-        android:id="@+id/lv_stocks"
+        android:id="@+id/lv_bank_rates"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>
