@@ -74,10 +74,8 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback, Goo
 
         Log.v(TAG, "onCreateView");
         View rootView = inflater.inflate(R.layout.fragment_details, container, false);
-
         mMapFragment = MapFragment.newInstance();
-        FragmentTransaction fragmentTransaction =
-                getChildFragmentManager().beginTransaction();
+        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.container, mMapFragment);
         fragmentTransaction.commit();
         mMapFragment.getMapAsync(this);
@@ -105,9 +103,7 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback, Goo
     public void onMapReady(GoogleMap googleMap) {
         Log.v(TAG, "onMapReady");
         mMap = googleMap;
-
         mMap.getUiSettings().setZoomControlsEnabled(true);
-
         checkLocationAndCameraLoaded();
     }
 
@@ -150,16 +146,10 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback, Goo
     void onLocationPermissionGranted() {
         Log.v(TAG, "onLocationPermissionGranted");
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
         if (mLastLocation == null) {
             return;
         }
@@ -178,57 +168,18 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback, Goo
         if (latitude != null && longitude != null && mMap != null) {
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), DEFAULT_ZOOM));
             queryBankBranches();
-
         }
     }
 
     void queryBankBranches() {
         new addMarkersTask(latitude, longitude, 50000, "bank", "cib").execute();
-
     }
-//    void queryBankBranches() {
-//        OkHttpClient client = new OkHttpClient();
-//        //TODO refactor
-//        Request request = new Request.Builder()
-//                .url(sbMethod(latitude, longitude, 50000, "bank", "cib").toString())
-//                .build();
-//        client.newCall(request).enqueue(new Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                Log.v(TAG, "onFailure");
-//            }
-//
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//                Log.v(TAG, " onResponse " + response.code());
-//                if (response.isSuccessful()) {
-//                    Log.v(TAG, " onResponse isSuccessful");
-//                    String responseBody = response.body().string().toString();
-//                    Log.v(TAG, " plases response body" + responseBody);
-//                    try {
-//                        PlacesResponse pr = new Gson().fromJson(responseBody, PlacesResponse.class);
-//                        addBankBranchesToMap(pr.getResults());
-//
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                        Log.e(TAG, " parsing went wong");
-//                    }
-//                } else {
-//                    Log.v(TAG, " onResponse is NOT Successful");
-//                }
-//
-//            }
-//        });
-//
-//
-//    }
 
-    //TODO  execute addBankBranchesToMap in post excute of async task
     void addBankBranchesToMap(ArrayList<Result> results) {
         int resultsArrayListSize = results.size();
-        Log.v(TAG, " results size" + resultsArrayListSize);
+        Log.v(TAG, "results size" + resultsArrayListSize);
         if (mMap == null) {
-            Log.v(TAG, " map is null");
+            Log.v(TAG, "map is null");
             return;
         }
 
@@ -256,10 +207,9 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback, Goo
         sb.append("&radius=" + radius);
         sb.append("&types=" + type);
         sb.append("&keyword=" + keyword);
-        // sb.append("&sensor=true");
         sb.append("&key=" + getActivity().getString(R.string.google_maps_key));
-        // example https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=31.2156876,29.9403779&radius=50000&types=bank
 
+        // example https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=31.2156876,29.9403779&radius=50000&types=bank
         Log.d("Map", "api: " + sb.toString());
 
         return sb;
@@ -294,10 +244,8 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback, Goo
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Log.v(TAG, "permission Granted");
                     onLocationPermissionGranted();
-
                 } else {
                     Log.v(TAG, "permission NOT Granted");
-
                 }
 
                 break;
@@ -336,8 +284,6 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback, Goo
 
                     PlacesResponse pr = new Gson().fromJson(responseBody, PlacesResponse.class);
                     results = pr.getResults();
-
-
                 } else {
                     Log.v(TAG, " onResponse is NOT Successful");
                 }
