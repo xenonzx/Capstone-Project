@@ -1,12 +1,3 @@
-buildscript {
-    repositories {
-        maven { url 'https://maven.fabric.io/public' }
-    }
-
-    dependencies {
-        classpath 'io.fabric.tools:gradle:1.+'
-    }
-}
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
@@ -16,10 +7,7 @@ repositories {
 
 apply plugin: 'io.fabric'
 
-repositories {
-    maven { url 'https://maven.fabric.io/public' }
-}
-
+def flavor
 
 android {
     compileSdkVersion 25
@@ -36,6 +24,18 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    productFlavors {
+        free {
+            applicationId "com.luxtech_eg.nanodegree.dakhakhny.omla.free"
+            versionName "1.0-free"
+            flavor = "free"
+        }
+        paid {
+            applicationId "com.luxtech_eg.nanodegree.dakhakhny.omla.paid"
+            versionName "1.0-paid"
+            flavor = "paid"
         }
     }
 }
