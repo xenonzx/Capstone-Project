@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="header_color">#f8807c7d</color>
     <color name="bank_card_background_color">#f8cfcccd</color>
+    <color name="widget_background">#7f000000</color>
 </resources>
