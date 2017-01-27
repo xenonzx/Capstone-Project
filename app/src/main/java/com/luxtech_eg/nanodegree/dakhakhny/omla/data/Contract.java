@@ -64,7 +64,7 @@ public final class Contract {
             return URI.buildUpon().appendPath(symbol).build();
         }
 
-        static String getBankFromUri(Uri queryUri) {
+        public static String getBankFromUri(Uri queryUri) {
             return queryUri.getLastPathSegment();
         }
 

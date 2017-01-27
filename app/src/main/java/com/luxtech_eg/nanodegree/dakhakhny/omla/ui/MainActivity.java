@@ -2,7 +2,6 @@ package com.luxtech_eg.nanodegree.dakhakhny.omla.ui;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -91,9 +90,9 @@ public class MainActivity extends AppCompatActivity implements CurrencyAdapter.C
 
     @Override
     public void onClick(String symbol) {
-        Uri bankUri = Contract.Bank.makeUriForBank(symbol);
+        //Uri bankSymbol = Contract.Bank.makeUriForBank(symbol);
         Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
-        intent.putExtra(DetailsActivity.EXTRAS_BANK_URI_KEY, bankUri.toString());
+        intent.putExtra(DetailsActivity.EXTRAS_BANK_SYMBOL_KEY, symbol);
         startActivity(intent);
     }
 

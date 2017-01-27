@@ -13,7 +13,7 @@ import com.luxtech_eg.nanodegree.dakhakhny.omla.R;
  */
 
 public class DetailsActivity extends AppCompatActivity {
-    public static String EXTRAS_BANK_URI_KEY = "bank_uri";
+    public static String EXTRAS_BANK_SYMBOL_KEY = "bank_symbol";
     public static String DETAILS_FRAG_TAG = "details_frag_tag";
     DetailsFragment detailsFragment;
 
@@ -25,8 +25,8 @@ public class DetailsActivity extends AppCompatActivity {
         if (detailsFragment == null) {
             Log.v("gaga", "detailsFragment is not null");
 
-            if (getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().containsKey(EXTRAS_BANK_URI_KEY)) {
-                detailsFragment = DetailsFragment.newInstance(getIntent().getExtras().getString(EXTRAS_BANK_URI_KEY));
+            if (getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().containsKey(EXTRAS_BANK_SYMBOL_KEY)) {
+                detailsFragment = DetailsFragment.newInstance(getIntent().getExtras().getString(EXTRAS_BANK_SYMBOL_KEY));
             } else {
                 detailsFragment = DetailsFragment.newInstance();
             }

@@ -44,14 +44,16 @@ import okhttp3.Response;
 public class DetailsFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private GoogleMap mMap;
     final String TAG = DetailsFragment.class.getSimpleName();
-    static String ARG_BANK_URI = "bank_uri";
+    static String ARG_BANK_SYMBOL = "bank_symbol";
     private Double longitude;
     private Double latitude;
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
     private final int LOCATION_PERMISSION_REQUEST = 200;
+    private final int DEFAULT_RADIUS = 50000;
     private final float DEFAULT_ZOOM = 12.0f;
     MapFragment mMapFragment;
+    String bankSymbol;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,6 +68,10 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback, Goo
                     .addApi(LocationServices.API)
                     .build();
         }
+        if (getArguments() != null && getArguments().containsKey(ARG_BANK_SYMBOL)) {
+            bankSymbol = getArguments().getString(ARG_BANK_SYMBOL);
+        }
+
     }
 
     @Nullable
@@ -114,7 +120,7 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback, Goo
 
     public static DetailsFragment newInstance(String bankUri) {
         Bundle args = new Bundle();
-        args.putString(ARG_BANK_URI, bankUri);
+        args.putString(ARG_BANK_SYMBOL, bankUri);
         DetailsFragment fragment = new DetailsFragment();
         fragment.setArguments(args);
         return fragment;
@@ -172,7 +178,8 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback, Goo
     }
 
     void queryBankBranches() {
-        new addMarkersTask(latitude, longitude, 50000, "bank", "cib").execute();
+        if (bankSymbol != null)
+            new addMarkersTask(latitude, longitude, DEFAULT_RADIUS, getString(R.string.google_api_places_type_bank), bankSymbol).execute();
     }
 
     void addBankBranchesToMap(ArrayList<Result> results) {

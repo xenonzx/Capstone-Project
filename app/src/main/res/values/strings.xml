@@ -26,4 +26,7 @@
     <string name="prefs_currency_display_value_sar">currency_display_value_sar</string>
     <string name="prefs_currency_display_value_eur">currency_display_value_eur</string>
     <string name="prefs_currency_display_value_gbp">currency_display_value_gbp</string>
+
+
+    <string name="google_api_places_type_bank" translatable="false">bank</string>
 </resources>
