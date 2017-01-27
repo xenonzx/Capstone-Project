@@ -15,7 +15,7 @@
     <string name="saudi_riyal_to_egyptian_pound">SAR/EGP</string>
     <string name="british_pound_to_egyptian_pound">GBP/EGP</string>
 
-    <string name="showing_rates_for">Showing rates for %1$s</string>
+    <string name="showing_rates_for">Rates for %1$s</string>
     <string name="price_with_egp_currency" translatable="false">%1$.3f EGP</string>
 
     <!-- prefs -->

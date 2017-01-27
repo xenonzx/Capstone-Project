@@ -15,6 +15,9 @@ import com.luxtech_eg.nanodegree.dakhakhny.omla.sync.BankRatesSyncJob;
 import com.luxtech_eg.nanodegree.dakhakhny.omla.ui.DetailsActivity;
 import com.luxtech_eg.nanodegree.dakhakhny.omla.ui.MainActivity;
 
+import static com.luxtech_eg.nanodegree.dakhakhny.omla.R.id.tv_rates_title;
+import static com.luxtech_eg.nanodegree.dakhakhny.omla.data.PrefUtils.getCurrencyDisplayMode;
+
 /**
  * Created by ahmed on 27/01/17.
  */
@@ -34,6 +37,14 @@ public class CurrencyWidgetProvider extends AppWidgetProvider {
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, getClass()));
             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.lv_bank_rates);
+            // appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.tv_rates_title);
+
+            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.layout_widget);
+
+            // Update text, images, whatever - here
+            remoteViews.setTextViewText(tv_rates_title, getRatesTitle(context));
+            // Trigger widget layout update
+            AppWidgetManager.getInstance(context).updateAppWidget(appWidgetIds, remoteViews);
         }
     }
 
@@ -44,6 +55,7 @@ public class CurrencyWidgetProvider extends AppWidgetProvider {
         for (int i = 0; i < appWidgetIds.length; i++) {
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.layout_widget);
             views.setOnClickPendingIntent(R.id.tv_widget_header, getMainActivityIntent(context));
+            views.setTextViewText(tv_rates_title, getRatesTitle(context));
             views.setRemoteAdapter(R.id.lv_bank_rates, new Intent(context, DetailWidgetRemoteViewsService.class));
             views.setPendingIntentTemplate(R.id.lv_bank_rates, getClickIntentTemplate(context));
             appWidgetManager.updateAppWidget(appWidgetIds[i], views);
@@ -51,6 +63,23 @@ public class CurrencyWidgetProvider extends AppWidgetProvider {
         }
     }
 
+    String getRatesTitle(Context context) {
+        Log.v(TAG, "notifyTitleChanged" + getCurrencyDisplayMode(context));
+        String displayMode = getCurrencyDisplayMode(context);
+        String rate = context.getString(R.string.us_dollar_to_egyptian_pound);
+
+        if (displayMode.equals(context.getString(R.string.prefs_currency_display_value_usd))) {
+
+            rate = context.getString(R.string.us_dollar_to_egyptian_pound);
+        } else if (displayMode.equals(context.getString(R.string.prefs_currency_display_value_eur))) {
+            rate = context.getString(R.string.euro_to_egyptian_pound);
+        } else if (displayMode.equals(context.getString(R.string.prefs_currency_display_value_sar))) {
+            rate = context.getString(R.string.saudi_riyal_to_egyptian_pound);
+        } else if (displayMode.equals(context.getString(R.string.prefs_currency_display_value_gbp))) {
+            rate = context.getString(R.string.british_pound_to_egyptian_pound);
+        }
+        return String.format(context.getString(R.string.showing_rates_for), rate);
+    }
 
     PendingIntent getMainActivityIntent(Context cxt) {
         Intent intent = new Intent(cxt, MainActivity.class);
