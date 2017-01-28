@@ -13,6 +13,7 @@ import com.luxtech_eg.nanodegree.dakhakhny.omla.R;
 import com.luxtech_eg.nanodegree.dakhakhny.omla.data.Contract;
 import com.luxtech_eg.nanodegree.dakhakhny.omla.data.PrefUtils;
 import com.luxtech_eg.nanodegree.dakhakhny.omla.ui.DetailsActivity;
+import com.luxtech_eg.nanodegree.dakhakhny.omla.utils.BankNamesHelper;
 
 /**
  * Created by ahmed on 04/01/17.
@@ -96,7 +97,7 @@ public class DetailWidgetRemoteViewsService extends RemoteViewsService {
 
 
                 RemoteViews views = new RemoteViews(getPackageName(), R.layout.layout_rates_list_item_widget);
-                views.setTextViewText(R.id.tv_item_title, bankSymbol);
+                views.setTextViewText(R.id.tv_item_title, BankNamesHelper.getBankNames(context, bankSymbol));
                 views.setTextViewText(R.id.tv_buy_rate, "" + buyPrice);
                 views.setTextViewText(R.id.tv_sell_rate, "" + sellPrice);
                 views.setOnClickFillInIntent(R.id.fl_list_item, getFillIntent(bankSymbol));
