@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="details_frag_rates_weight">3</integer>
+    <integer name="details_frag_map_weight">4</integer>
+</resources>
