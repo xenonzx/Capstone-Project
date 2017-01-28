@@ -2,14 +2,14 @@
 
     <!--bank names-->
 
-    <string name="aaib">البنك العربى الأفريقى</string>
-    <string name="alexbank">بنك الأسكندري</string>
-    <string name="banqueducaire">بنك القاهره</string>
-    <string name="benquemisr">بنك مصر</string>
-    <string name="blom">بنك بلوم</string>
-    <string name="cbe">البنك المركزى</string>
-    <string name="cib">البنك التجارى الدولى</string>
-    <string name="nbe">البنك الأهل</string>
-    <string name="scbank">بنك قناة السويس</string>
+    <string name="aaib" translatable="true">البنك العربى الأفريقى</string>
+    <string name="alexbank" translatable="true">بنك الأسكندري</string>
+    <string name="banqueducaire" translatable="true">بنك القاهره</string>
+    <string name="benquemisr" translatable="true">بنك مصر</string>
+    <string name="blom" translatable="true">بنك بلوم</string>
+    <string name="cbe" translatable="true">البنك المركزى</string>
+    <string name="cib" translatable="true">البنك التجارى الدولى</string>
+    <string name="nbe" translatable="true">البنك الأهل</string>
+    <string name="scbank" translatable="true">بنك قناة السويس</string>
 
 </resources>

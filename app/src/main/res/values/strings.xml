@@ -1,47 +1,47 @@
 <resources>
-    <string name="app_name">Omla</string>
-    <string name="rates">Rates</string>
-    <string name="sell">Sell</string>
-    <string name="buy">Buy</string>
+    <string name="app_name" translatable="true">Omla</string>
+    <string name="rates" translatable="true">Rates</string>
+    <string name="sell" translatable="true">Sell</string>
+    <string name="buy" translatable="true">Buy</string>
 
-    <string name="egyptian_pound">EGP</string>
-    <string name="us_dollar">USD</string>
-    <string name="euro">EUR</string>
-    <string name="saudi_riyal">SAR</string>
-    <string name="british_pound">GBP</string>
+    <string name="egyptian_pound" translatable="false">EGP</string>
+    <string name="us_dollar" translatable="false">USD</string>
+    <string name="euro" translatable="false">EUR</string>
+    <string name="saudi_riyal" translatable="false">SAR</string>
+    <string name="british_pound" translatable="false">GBP</string>
 
-    <string name="us_dollar_to_egyptian_pound">USD/EGP</string>
-    <string name="euro_to_egyptian_pound">EUR/EGP</string>
-    <string name="saudi_riyal_to_egyptian_pound">SAR/EGP</string>
-    <string name="british_pound_to_egyptian_pound">GBP/EGP</string>
+    <string name="us_dollar_to_egyptian_pound" translatable="false">USD/EGP</string>
+    <string name="euro_to_egyptian_pound" translatable="false">EUR/EGP</string>
+    <string name="saudi_riyal_to_egyptian_pound" translatable="false">SAR/EGP</string>
+    <string name="british_pound_to_egyptian_pound" translatable="false">GBP/EGP</string>
 
-    <string name="showing_rates_for">Rates for %1$s</string>
+    <string name="showing_rates_for" translatable="true">Rates for %1$s</string>
     <string name="price_with_egp_currency" translatable="false">%1$.3f EGP</string>
     <!--bank names-->
 
-    <string name="aaib">Arab African International Bank</string>
-    <string name="alexbank">Alex Bank</string>
-    <string name="banqueducaire">Banque du Caire</string>
-    <string name="benquemisr">Banque Misr</string>
-    <string name="blom">Blom Bank Egypt</string>
-    <string name="cbe">Central Bank of Egypt</string>
-    <string name="cib">Commercial International Bank</string>
-    <string name="nbe">National Bank of Egypt</string>
-    <string name="scbank">Suez Canal Bank</string>
+    <string name="aaib" translatable="true">Arab African International Bank</string>
+    <string name="alexbank" translatable="true">Alex Bank</string>
+    <string name="banqueducaire" translatable="true">Banque du Caire</string>
+    <string name="benquemisr" translatable="true">Banque Misr</string>
+    <string name="blom" translatable="true">Blom Bank Egypt</string>
+    <string name="cbe" translatable="true">Central Bank of Egypt</string>
+    <string name="cib" translatable="true">Commercial International Bank</string>
+    <string name="nbe" translatable="true">National Bank of Egypt</string>
+    <string name="scbank" translatable="true">Suez Canal Bank</string>
 
     <!-- prefs -->
-    <string name="prefs_currency_display_key">currency_display_key</string>
-    <string name="prefs_currency_display_value_default">@string/prefs_currency_display_value_usd</string>
+    <string name="prefs_currency_display_key" translatable="false">currency_display_key</string>
+    <string name="prefs_currency_display_value_default" translatable="false">@string/prefs_currency_display_value_usd</string>
 
-    <string name="prefs_currency_display_value_usd">currency_display_value_usd</string>
-    <string name="prefs_currency_display_value_sar">currency_display_value_sar</string>
-    <string name="prefs_currency_display_value_eur">currency_display_value_eur</string>
-    <string name="prefs_currency_display_value_gbp">currency_display_value_gbp</string>
+    <string name="prefs_currency_display_value_usd" translatable="false">currency_display_value_usd</string>
+    <string name="prefs_currency_display_value_sar" translatable="false">currency_display_value_sar</string>
+    <string name="prefs_currency_display_value_eur" translatable="false">currency_display_value_eur</string>
+    <string name="prefs_currency_display_value_gbp" translatable="false">currency_display_value_gbp</string>
 
 
     <string name="google_api_places_type_bank" translatable="false">bank</string>
 
-    <string name="widget_label">@string/app_name</string>
+    <string name="widget_label" translatable="true">@string/app_name</string>
 
-    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
 </resources>
