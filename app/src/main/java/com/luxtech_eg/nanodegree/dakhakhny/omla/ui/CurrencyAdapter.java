@@ -119,7 +119,9 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.Curren
         void bind(String rateTitle, String buyRate, String sellRate) {
             title.setText(rateTitle);
             buy.setText(buyRate);
+            buy.setContentDescription(context.getString(R.string.content_desc_buying_at) + buyRate);
             sell.setText(sellRate);
+            sell.setContentDescription(context.getString(R.string.content_desc_selling_at) + sellRate);
         }
 
 

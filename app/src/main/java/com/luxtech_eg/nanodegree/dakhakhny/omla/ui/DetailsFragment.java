@@ -329,17 +329,24 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback, Goo
 
 
         usdBuy.setText(String.format(getString(R.string.price_with_egp_currency), data.getDouble(Contract.Bank.POSITION_USD_BUY_PRICE)));
+        usdBuy.setContentDescription(getString(R.string.content_desc_buying_at) + usdBuy.getText());
         usdSell.setText(String.format(getString(R.string.price_with_egp_currency), data.getDouble(Contract.Bank.POSITION_USD_SELL_PRICE)));
+        usdSell.setContentDescription(getString(R.string.content_desc_selling_at) + usdSell.getText());
 
         eurBuy.setText(String.format(getString(R.string.price_with_egp_currency), data.getDouble(Contract.Bank.POSITION_EUR_BUY_PRICE)));
+        eurBuy.setContentDescription(getString(R.string.content_desc_buying_at) + eurBuy.getText());
         eurSell.setText(String.format(getString(R.string.price_with_egp_currency), data.getDouble(Contract.Bank.POSITION_EUR_SELL_PRICE)));
+        eurSell.setContentDescription(getString(R.string.content_desc_selling_at) + eurSell.getText());
 
         sarBuy.setText(String.format(getString(R.string.price_with_egp_currency), data.getDouble(Contract.Bank.POSITION_SAR_BUY_PRICE)));
+        sarBuy.setContentDescription(getString(R.string.content_desc_buying_at) + sarBuy.getText());
         sarSell.setText(String.format(getString(R.string.price_with_egp_currency), data.getDouble(Contract.Bank.POSITION_SAR_SELL_PRICE)));
+        sarSell.setContentDescription(getString(R.string.content_desc_selling_at) + sarSell.getText());
 
         gbpBuy.setText(String.format(getString(R.string.price_with_egp_currency), data.getDouble(Contract.Bank.POSITION_GBP_BUY_PRICE)));
+        gbpBuy.setContentDescription(getString(R.string.content_desc_buying_at) + gbpBuy.getText());
         gbpSell.setText(String.format(getString(R.string.price_with_egp_currency), data.getDouble(Contract.Bank.POSITION_GBP_SELL_PRICE)));
-
+        gbpSell.setContentDescription(getString(R.string.content_desc_selling_at) + gbpSell.getText());
 
     }
 

@@ -44,4 +44,7 @@
     <string name="widget_label" translatable="true">@string/app_name</string>
 
     <string name="banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+
+    <string name="content_desc_buying_at" translatable="true">buying rate </string>
+    <string name="content_desc_selling_at" translatable="true">selling rate </string>
 </resources>
