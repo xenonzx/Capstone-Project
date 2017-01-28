@@ -8,8 +8,20 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
+    <style name="RatesListItemLayout">
+        <item name="android:background">@color/bank_card_background_color</item>
+    </style>
+
     <style name="RatesListItemDetail">
         <item name="android:textColor">@color/list_item_text_color</item>
+    </style>
 
+    <style name="RatesListHeader">
+        <item name="android:background">@color/header_color</item>
+    </style>
+
+    <style name="RatesListHeaderTitle">
+        <item name="android:textColor">@color/header_title_text_color</item>
     </style>
 </resources>

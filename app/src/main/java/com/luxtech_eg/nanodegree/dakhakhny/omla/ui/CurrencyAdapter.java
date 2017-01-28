@@ -74,7 +74,7 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.Curren
             sellPrice = cursor.getDouble(Contract.Bank.POSITION_EUR_SELL_PRICE);
         }
 
-        holder.bind(BankNamesHelper.getBankNames(context, cursor.getString(Contract.Bank.POSITION_BANK_SYMBOL)), buyPrice, sellPrice);
+        holder.bind(BankNamesHelper.getBankNames(context, cursor.getString(Contract.Bank.POSITION_BANK_SYMBOL)), String.format(context.getString(R.string.price_with_egp_currency), buyPrice), String.format(context.getString(R.string.price_with_egp_currency), sellPrice));
     }
 
     @Override
@@ -116,10 +116,10 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.Curren
 
         }
 
-        void bind(String rateTitle, Double buyRate, Double sellRate) {
+        void bind(String rateTitle, String buyRate, String sellRate) {
             title.setText(rateTitle);
-            buy.setText("" + buyRate);
-            sell.setText("" + sellRate);
+            buy.setText(buyRate);
+            sell.setText(sellRate);
         }
 
 

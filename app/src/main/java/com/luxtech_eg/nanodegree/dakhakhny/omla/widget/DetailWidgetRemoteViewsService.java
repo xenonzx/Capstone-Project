@@ -98,8 +98,8 @@ public class DetailWidgetRemoteViewsService extends RemoteViewsService {
 
                 RemoteViews views = new RemoteViews(getPackageName(), R.layout.layout_rates_list_item_widget);
                 views.setTextViewText(R.id.tv_item_title, BankNamesHelper.getBankNames(context, bankSymbol));
-                views.setTextViewText(R.id.tv_buy_rate, "" + buyPrice);
-                views.setTextViewText(R.id.tv_sell_rate, "" + sellPrice);
+                views.setTextViewText(R.id.tv_buy_rate, String.format(context.getString(R.string.price_with_egp_currency), buyPrice));
+                views.setTextViewText(R.id.tv_sell_rate, String.format(context.getString(R.string.price_with_egp_currency), sellPrice));
                 views.setOnClickFillInIntent(R.id.fl_list_item, getFillIntent(bankSymbol));
                 return views;
 
