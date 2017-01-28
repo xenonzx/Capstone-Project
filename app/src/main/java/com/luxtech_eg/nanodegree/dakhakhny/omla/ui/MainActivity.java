@@ -232,8 +232,12 @@ public class MainActivity extends AppCompatActivity implements CurrencyAdapter.C
         if (data.getCount() != 0) {
             //TODO Hide ERROR MESSAGE
         }
-        data.moveToFirst();
-        commitDetailsFragment(data.getString(Contract.Bank.POSITION_BANK_SYMBOL));
+        
+        if (findViewById(R.id.fl_details_container) != null) {
+            data.moveToFirst();
+            commitDetailsFragment(data.getString(Contract.Bank.POSITION_BANK_SYMBOL));
+        }
+
         adapter.setCursor(data);
         refreshLayout.setRefreshing(false);
     }
