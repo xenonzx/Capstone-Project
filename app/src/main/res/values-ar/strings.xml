@@ -1,0 +1,15 @@
+<resources>
+
+    <!--bank names-->
+
+    <string name="aaib">البنك العربى الأفريقى</string>
+    <string name="alexbank">بنك الأسكندري</string>
+    <string name="banqueducaire">بنك القاهره</string>
+    <string name="benquemisr">بنك مصر</string>
+    <string name="blom">بنك بلوم</string>
+    <string name="cbe">البنك المركزى</string>
+    <string name="cib">البنك التجارى الدولى</string>
+    <string name="nbe">البنك الأهل</string>
+    <string name="scbank">بنك قناة السويس</string>
+
+</resources>
