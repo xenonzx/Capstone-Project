@@ -2,4 +2,8 @@
 <resources>
     <integer name="details_frag_rates_weight">3</integer>
     <integer name="details_frag_map_weight">4</integer>
+
+    <integer name="header_title_weight">2</integer>
+    <integer name="header_sell_weight">1</integer>
+    <integer name="header_buy_weight">1</integer>
 </resources>
