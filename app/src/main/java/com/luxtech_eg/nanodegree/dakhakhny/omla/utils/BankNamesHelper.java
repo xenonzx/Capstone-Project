@@ -20,8 +20,8 @@ import static com.luxtech_eg.nanodegree.dakhakhny.omla.model.RatesResponse.Bank_
 
 public class BankNamesHelper {
 
-
-  public static String getBankNames(Context context, String symbol) {
+    // helper as the api does not provide the english names of banks
+    public static String getBankNames(Context context, String symbol) {
         String bank = symbol;
         if (Bank_AAIB.equals(symbol)) {
             bank = context.getString(R.string.aaib);
