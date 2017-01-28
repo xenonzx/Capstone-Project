@@ -10,15 +10,15 @@ import java.util.ArrayList;
  */
 
 public class RatesResponse {
-    final String Bank_AAIB = "aaib";
-    final String Bank_ALEX_BANK = "alexbank";
-    final String Bank_BANQUE_DU_CAIRE = "banqueducaire";
-    final String Bank_BENQUE_MISR = "benquemisr";
-    final String Bank_BLOM = "blom";
-    final String Bank_CEB = "cbe";
-    final String Bank_CIB = "cib";
-    final String Bank_NBE = "nbe";
-    final String Bank_SCBANK = "scbank";
+    public static final String Bank_AAIB = "aaib";
+    public static final String Bank_ALEX_BANK = "alexbank";
+    public static final String Bank_BANQUE_DU_CAIRE = "banqueducaire";
+    public static final String Bank_BENQUE_MISR = "benquemisr";
+    public static final String Bank_BLOM = "blom";
+    public static final String Bank_CEB = "cbe";
+    public static final String Bank_CIB = "cib";
+    public static final String Bank_NBE = "nbe";
+    public static final String Bank_SCBANK = "scbank";
 
     @SerializedName(Bank_AAIB)
     @Expose

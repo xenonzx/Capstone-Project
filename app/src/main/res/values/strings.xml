@@ -17,6 +17,17 @@
 
     <string name="showing_rates_for">Rates for %1$s</string>
     <string name="price_with_egp_currency" translatable="false">%1$.3f EGP</string>
+    <!--bank names-->
+
+    <string name="aaib">Arab African International Bank</string>
+    <string name="alexbank">Alex Bank</string>
+    <string name="banqueducaire">Banque du Caire</string>
+    <string name="benquemisr">Banque Misr</string>
+    <string name="blom">Blom Bank Egypt</string>
+    <string name="cbe">Central Bank of Egypt</string>
+    <string name="cib">Commercial International Bank</string>
+    <string name="nbe">National Bank of Egypt</string>
+    <string name="scbank">Suez Canal Bank</string>
 
     <!-- prefs -->
     <string name="prefs_currency_display_key">currency_display_key</string>

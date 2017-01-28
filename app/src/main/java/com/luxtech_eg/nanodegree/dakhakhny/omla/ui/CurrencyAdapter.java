@@ -13,6 +13,7 @@ import com.luxtech_eg.nanodegree.dakhakhny.omla.R;
 import com.luxtech_eg.nanodegree.dakhakhny.omla.data.Contract;
 import com.luxtech_eg.nanodegree.dakhakhny.omla.data.PrefUtils;
 import com.luxtech_eg.nanodegree.dakhakhny.omla.model.Bank;
+import com.luxtech_eg.nanodegree.dakhakhny.omla.utils.BankNamesHelper;
 
 import java.util.ArrayList;
 
@@ -73,7 +74,7 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.Curren
             sellPrice = cursor.getDouble(Contract.Bank.POSITION_EUR_SELL_PRICE);
         }
 
-        holder.bind(cursor.getString(Contract.Bank.POSITION_BANK_SYMBOL), buyPrice, sellPrice);
+        holder.bind(BankNamesHelper.getBankNames(context, cursor.getString(Contract.Bank.POSITION_BANK_SYMBOL)), buyPrice, sellPrice);
     }
 
     @Override
