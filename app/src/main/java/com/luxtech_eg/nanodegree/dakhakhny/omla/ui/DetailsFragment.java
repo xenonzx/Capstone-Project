@@ -3,7 +3,11 @@ package com.luxtech_eg.nanodegree.dakhakhny.omla.ui;
 import android.Manifest;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.app.LoaderManager;
+import android.content.CursorLoader;
+import android.content.Loader;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -15,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -27,12 +32,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.luxtech_eg.nanodegree.dakhakhny.omla.R;
+import com.luxtech_eg.nanodegree.dakhakhny.omla.data.Contract;
 import com.luxtech_eg.nanodegree.dakhakhny.omla.model.PlacesResponse;
 import com.luxtech_eg.nanodegree.dakhakhny.omla.model.Result;
+import com.luxtech_eg.nanodegree.dakhakhny.omla.utils.BankNamesHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -41,7 +50,7 @@ import okhttp3.Response;
  * Created by ahmed on 21/01/17.
  */
 
-public class DetailsFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class DetailsFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LoaderManager.LoaderCallbacks<Cursor> {
     private GoogleMap mMap;
     final String TAG = DetailsFragment.class.getSimpleName();
     static String ARG_BANK_SYMBOL = "bank_symbol";
@@ -52,8 +61,36 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback, Goo
     private final int LOCATION_PERMISSION_REQUEST = 200;
     private final int DEFAULT_RADIUS = 50000;
     private final float DEFAULT_ZOOM = 12.0f;
+    private static final int BANK_RATES_LOADER = 1;
     MapFragment mMapFragment;
     String bankSymbol;
+
+    @BindView(R.id.tv_bank_name)
+    TextView bankName;
+
+    @BindView(R.id.tv_usd_buy_rate)
+    TextView usdBuy;
+
+    @BindView(R.id.tv_usd_sell_rate)
+    TextView usdSell;
+
+    @BindView(R.id.tv_eur_buy_rate)
+    TextView eurBuy;
+
+    @BindView(R.id.tv_eur_sell_rate)
+    TextView eurSell;
+
+    @BindView(R.id.tv_sar_buy_rate)
+    TextView sarBuy;
+
+    @BindView(R.id.tv_sar_sell_rate)
+    TextView sarSell;
+
+    @BindView(R.id.tv_gbp_buy_rate)
+    TextView gbpBuy;
+
+    @BindView(R.id.tv_gbp_sell_rate)
+    TextView gbpSell;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,14 +117,26 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback, Goo
 
         Log.v(TAG, "onCreateView");
         View rootView = inflater.inflate(R.layout.fragment_details, container, false);
+        ButterKnife.bind(this, rootView);
         mMapFragment = MapFragment.newInstance();
         FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.container, mMapFragment);
         fragmentTransaction.commit();
         mMapFragment.getMapAsync(this);
 
+        if (bankSymbol != null) {
+            bankName.setText(BankNamesHelper.getBankNames(getActivity(), bankSymbol));
+        }
 
         return rootView;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (bankSymbol != null) {
+            getLoaderManager().initLoader(BANK_RATES_LOADER, null, DetailsFragment.this);
+        }
     }
 
     @Override
@@ -259,6 +308,46 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback, Goo
             }
         }
     }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Log.v(TAG, "onCreateLoader");
+        // already checked if (bankSymbol != null)  before in on activity created
+        return new CursorLoader(getActivity(),
+                Contract.Bank.makeUriForBank(bankSymbol),
+                Contract.Bank.BANK_COLUMNS,
+                null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        Log.v(TAG, "onLoadFinished");
+        if (data.getCount() != 0) {
+            //TODO Hide ERROR MESSAGE
+        }
+        data.moveToFirst();
+
+
+        usdBuy.setText(String.format(getString(R.string.price_with_egp_currency), data.getDouble(Contract.Bank.POSITION_USD_BUY_PRICE)));
+        usdSell.setText(String.format(getString(R.string.price_with_egp_currency), data.getDouble(Contract.Bank.POSITION_USD_SELL_PRICE)));
+
+        eurBuy.setText(String.format(getString(R.string.price_with_egp_currency), data.getDouble(Contract.Bank.POSITION_EUR_BUY_PRICE)));
+        eurSell.setText(String.format(getString(R.string.price_with_egp_currency), data.getDouble(Contract.Bank.POSITION_EUR_SELL_PRICE)));
+
+        sarBuy.setText(String.format(getString(R.string.price_with_egp_currency), data.getDouble(Contract.Bank.POSITION_SAR_BUY_PRICE)));
+        sarSell.setText(String.format(getString(R.string.price_with_egp_currency), data.getDouble(Contract.Bank.POSITION_SAR_SELL_PRICE)));
+
+        gbpBuy.setText(String.format(getString(R.string.price_with_egp_currency), data.getDouble(Contract.Bank.POSITION_GBP_BUY_PRICE)));
+        gbpSell.setText(String.format(getString(R.string.price_with_egp_currency), data.getDouble(Contract.Bank.POSITION_GBP_SELL_PRICE)));
+
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        Log.v(TAG, "onLoaderReset");
+    }
+
 
     class addMarkersTask extends AsyncTask<Void, Void, ArrayList<Result>> {
         private final double lat;

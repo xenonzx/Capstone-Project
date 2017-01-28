@@ -30,11 +30,11 @@
                 android:paddingTop="@dimen/activity_vertical_margin">
 
                 <TextView
+                    android:id="@+id/tv_bank_name"
                     style="@style/RatesListHeaderTitle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="@string/rates" />
+                    android:layout_weight="2" />
 
                 <TextView
                     style="@style/RatesListHeaderTitle"
