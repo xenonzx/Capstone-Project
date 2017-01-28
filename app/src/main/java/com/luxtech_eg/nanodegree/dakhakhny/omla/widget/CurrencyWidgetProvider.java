@@ -78,7 +78,7 @@ public class CurrencyWidgetProvider extends AppWidgetProvider {
         } else if (displayMode.equals(context.getString(R.string.prefs_currency_display_value_gbp))) {
             rate = context.getString(R.string.british_pound_to_egyptian_pound);
         }
-        return String.format(context.getString(R.string.showing_rates_for), rate);
+        return rate;
     }
 
     PendingIntent getMainActivityIntent(Context cxt) {
