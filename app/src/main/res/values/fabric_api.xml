@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="fabric_api_key">c0580d5bd2b353be7043c439b39bdc86e2c3c27e</string>
+    <string name="fabric_api_key" translatable="false">Please add  yor fabric  key</string>
 </resources>
