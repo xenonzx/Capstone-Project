@@ -47,6 +47,12 @@
 
     <string name="content_desc_buying_at" translatable="true">buying rate </string>
     <string name="content_desc_selling_at" translatable="true">selling rate </string>
+    <string name="content_desc_sorting_with_buying_price" translatable="true">choose to sort banks with buying price </string>
+    <string name="content_desc_sorting_with_selling_price" translatable="true">choose to sort banks with selling price </string>
+
+    <string name="content_desc_sorted_with_buying_price" translatable="true">banks are sorted with buying price </string>
+    <string name="content_desc_sorted_with_selling_price" translatable="true">banks are sorted with selling price </string>
+
 
     <string name="error_no_network">No network connectivity! Please connect to Internet.</string>
     <string name="toast_no_connectivity">Will refresh once network available.</string>
