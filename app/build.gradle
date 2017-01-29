@@ -75,8 +75,14 @@ dependencies {
         transitive = true;
     }
 
-    //google play services
-    compile 'com.google.android.gms:play-services:10.0.1'
+    //location
+    compile 'com.google.android.gms:play-services-location:10.0.1'
+
+    //ads
+    compile 'com.google.android.gms:play-services-ads:10.0.1'
+
+    //places
+    compile 'com.google.android.gms:play-services-places:10.0.1'
 
 
 }
