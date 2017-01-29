@@ -1,4 +1,23 @@
 <resources>
+    <string name="app_name" translatable="true">عملة</string>
+    <string name="rates" translatable="true">سعر الصرف</string>
+    <string name="sell" translatable="true">بيع</string>
+    <string name="buy" translatable="true">شراء</string>
+    <string name="showing_rates_for" translatable="true">Rates for %1$s</string>
+    <string name="widget_label" translatable="true">@string/app_name</string>
+
+
+    <string name="content_desc_buying_at" translatable="true">سعر الشراء </string>
+    <string name="content_desc_selling_at" translatable="true">سعر البيع</string>
+    <string name="content_desc_sorting_with_buying_price" translatable="true">أختر ترتيب البنوك حسب سعر الشراء</string>
+    <string name="content_desc_sorting_with_selling_price" translatable="true">أختر سعر ترتيب البنوك حسب سعر البيع</string>
+
+    <string name="content_desc_sorted_with_buying_price" translatable="true">البنوك مرتبة حسب سعر الشراء</string>
+    <string name="content_desc_sorted_with_selling_price" translatable="true">البنو مرتبة حسب سعر البيع</string>
+
+
+    <string name="error_no_network"> لا يوجد اتصال بالانتر نت الرجاء الاتصال بالانترنت</string>
+    <string name="toast_no_connectivity"> لايوجد اتصال بالانترنت</string>
 
     <!--bank names-->
 
