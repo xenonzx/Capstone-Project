@@ -1,8 +1,11 @@
 package com.luxtech_eg.nanodegree.dakhakhny.omla.ui;
 
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -17,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.ads.AdRequest;
@@ -35,7 +39,7 @@ import io.fabric.sdk.android.Fabric;
 import static com.luxtech_eg.nanodegree.dakhakhny.omla.data.PrefUtils.getCurrencyDisplayMode;
 import static com.luxtech_eg.nanodegree.dakhakhny.omla.ui.DetailsActivity.EXTRAS_BANK_SYMBOL_KEY;
 
-public class MainActivity extends AppCompatActivity implements CurrencyAdapter.CurrencyAdapterOnClickHandler, LoaderManager.LoaderCallbacks<Cursor> {
+public class MainActivity extends AppCompatActivity implements CurrencyAdapter.CurrencyAdapterOnClickHandler, LoaderManager.LoaderCallbacks<Cursor>, SwipeRefreshLayout.OnRefreshListener {
     private String TAG = MainActivity.class.getSimpleName();
 
     @BindView(R.id.my_recycler_view)
@@ -55,6 +59,9 @@ public class MainActivity extends AppCompatActivity implements CurrencyAdapter.C
     TextView sell;
     @BindView(R.id.tv_buy)
     TextView buy;
+
+    @BindView(R.id.error)
+    TextView error;
 
     RecyclerView.LayoutManager layoutManager;
     CurrencyAdapter adapter;
@@ -90,12 +97,10 @@ public class MainActivity extends AppCompatActivity implements CurrencyAdapter.C
         BankRatesSyncJob.initialize(this);
         getSupportLoaderManager().initLoader(RATES_LOADER, null, this);
 
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                BankRatesSyncJob.syncImmediately(MainActivity.this);
-            }
-        });
+        refreshLayout.setOnRefreshListener(this);
+        refreshLayout.setRefreshing(true);
+        onRefresh();
+
         buy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -230,9 +235,9 @@ public class MainActivity extends AppCompatActivity implements CurrencyAdapter.C
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         Log.v(TAG, "onLoadFinished");
         if (data.getCount() != 0) {
-            //TODO Hide ERROR MESSAGE
+            error.setVisibility(View.GONE);
         }
-        
+
         if (findViewById(R.id.fl_details_container) != null) {
             data.moveToFirst();
             commitDetailsFragment(data.getString(Contract.Bank.POSITION_BANK_SYMBOL));
@@ -277,5 +282,28 @@ public class MainActivity extends AppCompatActivity implements CurrencyAdapter.C
     void sortWithSell() {
         sortingOrder = SELL_SORTING;
         getSupportLoaderManager().restartLoader(RATES_LOADER, null, this);
+    }
+
+    @Override
+    public void onRefresh() {
+        BankRatesSyncJob.syncImmediately(MainActivity.this);
+
+        if (!networkUp() && adapter.getItemCount() == 0) {
+            refreshLayout.setRefreshing(false);
+            error.setText(getString(R.string.error_no_network));
+            error.setVisibility(View.VISIBLE);
+        } else if (!networkUp()) {
+            refreshLayout.setRefreshing(false);
+            Toast.makeText(this, R.string.toast_no_connectivity, Toast.LENGTH_LONG).show();
+        } else {
+            error.setVisibility(View.GONE);
+        }
+    }
+
+    private boolean networkUp() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnectedOrConnecting();
     }
 }

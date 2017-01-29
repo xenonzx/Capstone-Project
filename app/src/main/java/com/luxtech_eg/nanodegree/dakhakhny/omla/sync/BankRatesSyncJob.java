@@ -29,7 +29,7 @@ public final class BankRatesSyncJob {
     private static final String ONE_OFF_JOB_TAG = "one_off_job";
     public static final String ACTION_DATA_UPDATED = "com.luxtech_eg.nanodegree.dakhakhny.omla.ACTION_DATA_UPDATED";
     public static final String ACTION_INVALID_SYMBOL = "com.luxtech_eg.nanodegree.dakhakhny.omla.ACTION_INVALID_SYMBOL";
-    public static final String EXTRAS_INVALID_SYMBOL = "EXTRAS_INVALID_SYMBOL";
+
     private static final int START_WINDOW_IN_SECONDS = 1;
     private static final int END_WINDOW_IN_SECONDS = 60;
     private static final String PERIODIC_JOB_TAG = "periodic_job";

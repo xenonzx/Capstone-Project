@@ -47,4 +47,7 @@
 
     <string name="content_desc_buying_at" translatable="true">buying rate </string>
     <string name="content_desc_selling_at" translatable="true">selling rate </string>
+
+    <string name="error_no_network">No network connectivity! Please connect to Internet.</string>
+    <string name="toast_no_connectivity">Will refresh once network available.</string>
 </resources>
